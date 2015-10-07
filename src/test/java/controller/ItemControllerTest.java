@@ -1,40 +1,41 @@
 package controller;
 
-import org.junit.Before;
+import entity.Item;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockServletContext;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MockMvcBuilder;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.ui.Model;
 import repository.ItemRepository;
 
-import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
-import static org.junit.Assert.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created by komal on 07/10/15.
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = MockServletContext.class)
-@WebAppConfiguration
 public class ItemControllerTest {
 
-    private MockMvc mvc ;
-    @Before
-    public void setUp() throws Exception {
-        mvc = MockMvcBuilders.standaloneSetup(new ItemController(new ItemRepository())).build();
-    }
-
     @Test
-    public void testGetItem() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.get("/item").accept(MediaType.TEXT_HTML)).andExpect(status().isOk());
+    public void testGetItem(){
+        ItemRepository mockRepository = mock(ItemRepository.class);
+        Model mockModel = mock(Model.class);
+
+        List<Item> listOfItems = new ArrayList<Item>();
+        listOfItems.add(new Item(1, 12d, "IC12"));
+        listOfItems.add(new Item(2, 13d, "IC13"));
+        listOfItems.add(new Item(3, 14d, "IC14"));
+        listOfItems.add(new Item(4,15d,"IC15"));
+        listOfItems.add(new Item(5, 16d, "IC16"));
+
+        when(mockRepository.getAll()).thenReturn(listOfItems);
+
+        ItemController itemController = new ItemController(mockRepository);
+        String viewName = itemController.getItem(mockModel);
+        verify(mockModel).addAttribute("items", listOfItems);
+        assertEquals("items",viewName);
+
     }
 }
