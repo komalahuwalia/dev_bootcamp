@@ -13,12 +13,12 @@ import java.util.List;
 @Controller
 public class ItemController {
 
+    ItemRepository itemRepository ;
 
-    ItemRepository itemRepository = new ItemRepository();
-
-//    public ItemController(ItemRepository itemRepository){
-//        this.itemRepository = itemRepository;
-//    }
+    @Autowired
+    public ItemController(ItemRepository itemRepository){
+        this.itemRepository = itemRepository;
+    }
 
     @RequestMapping("/item")
     public String getItem(Model model) {
