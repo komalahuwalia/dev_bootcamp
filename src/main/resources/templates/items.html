@@ -10,12 +10,20 @@
         <th>ID</th>
         <th>NAME</th>
         <th>PRICE</th>
+        <th>CHECKBOX</th>
     </tr>
+    <form action="#" th:action="@{/addItem}" method="post">
+    <!--th:object="${items}"-->
     <tr th:each="item  : ${items}">
         <td th:text="${item.id}"></td>
         <td th:text="${item.name}"></td>
         <td th:text="${item.price}"></td>
+        <td><input type="checkbox" name="itemList" value="${item.id}" /></td>
     </tr>
+    <tr>
+        <td colspan="4"><input type="submit" value="Submit" /></td>
+    </tr>
+    </form>
 </table>
 
 </body>

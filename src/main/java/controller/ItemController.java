@@ -28,6 +28,14 @@ public class ItemController {
         return "items";
     }
 
+    @RequestMapping("/addItem")
+    public String addItem(@RequestParam(value="itemList") String[] itemList, Model model){
+        for(String value : itemList) {
+            System.out.println(value);
+        }
+        return "showCart";
+    }
+
     private void addDummyItems(){
         itemRepository.add(new Item(1, 12d, "IC12"));
         itemRepository.add(new Item(2, 13d, "IC13"));
